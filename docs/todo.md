@@ -25,3 +25,24 @@ GET /tierone/submitted-incidents/
     - Giving them a list?
     - Only if it is still in the PendingTier1Review State
         - How would they know? (Another read model?)
+
+
+# User getting a list of all their incidents.
+
+```
+GET /user/incidents
+
+200 Ok
+
+{
+    "pending": {
+        "{id}": { "id": "{id}", "software": { "id": "{softwareId"}, "title": "VS Code" } }
+    },
+    "inProcess: {},
+    "resolved": {}
+}
+
+```
+GET /user/pending-incidents
+
+DELETE /user/pending-incidents/{id}
