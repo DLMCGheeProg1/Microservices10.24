@@ -5,7 +5,7 @@ namespace HelpDesk.Api.SoftwareCenter;
 [Route("software-center/catalog")]
 public class SoftwareCenterController(IDocumentSession session) : ControllerBase
 {
-    [HttpPost("catalog")]
+    [HttpPost]
 
     public async Task<ActionResult> AddItemToCatalogAsync([FromBody] CatalogItemRequestModel request)
     {

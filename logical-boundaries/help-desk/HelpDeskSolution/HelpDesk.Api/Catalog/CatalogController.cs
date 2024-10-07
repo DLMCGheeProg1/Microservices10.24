@@ -1,5 +1,6 @@
 ﻿using HelpDesk.Api.SoftwareCenter;
 using Marten;
+using Marten.Events.Aggregation;
 using Marten.Events.Projections;
 
 namespace HelpDesk.Api.Catalog;
@@ -21,16 +22,18 @@ public class SoftwareCatalogItem
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+
+
 }
 
-public class SoftwareCatalogItemProjection : MultiStreamProjection<SoftwareCatalogItem, Guid>
+public class SoftwareCatalogItemProjection : SingleStreamProjection<SoftwareCatalogItem>
 {
 
 
     public SoftwareCatalogItemProjection()
     {
-        Identity<CatalogItemAdded>(e => e.Id);
-        //DeleteEvent<CatalogItemRetired>();
+       
+        DeleteEvent<CatalogItemRetired>(e => true);
     }
 
     public void Apply(CatalogItemAdded @event, SoftwareCatalogItem view)
@@ -40,8 +43,5 @@ public class SoftwareCatalogItemProjection : MultiStreamProjection<SoftwareCatal
         view.Description = @event.Description;
     }
 
-    public bool ShouldDelete(CatalogItemRetired @event)
-    {
-        return true;
-    }
+ 
 }
