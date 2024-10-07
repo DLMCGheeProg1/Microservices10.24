@@ -1,5 +1,19 @@
 # Tier 1 Support
 - Annotating that they've contacted the customer
+
+```
+POST /tierone/submitted-incidents/{id}/contact-records
+
+{
+    "note": "Gave them a call"
+}
+
+```
+
+```
+GET /tierone/submitted-incidents/
+
+```
 - Optionally annotating that it is high priority.
 - Optionally resolving it.
 - Assigning it to a tech

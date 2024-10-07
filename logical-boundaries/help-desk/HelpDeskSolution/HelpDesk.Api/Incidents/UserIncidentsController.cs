@@ -1,4 +1,5 @@
-﻿using HelpDesk.Api.Services;
+﻿using HelpDesk.Api.Incidents.TierOne;
+using HelpDesk.Api.Services;
 using Marten;
 using Marten.Events;
 
@@ -34,9 +35,8 @@ public class UserIncidentsController(IProvideUserInformation userInfoProvider, I
     {
         // Todo - verify the catalogId??
 
-        // might be a little inefficient - it is going to read ALL the events in that stream every time
-        // and create this.
-        var readModel = session.LoadAsync<IncidentReadModel>(incidentId);
+
+        var readModel = await session.LoadAsync<IncidentReadModel>(incidentId);
         if (readModel == null)
         {
             return NotFound();
@@ -54,8 +54,23 @@ public class UserIncidentsController(IProvideUserInformation userInfoProvider, I
         //     ?? Maybe the tier1 can delete it? ask? but we'll return a http Conflict response.
 
         // always return a 204. No content. 
+
+        //var savedIncident = await session.LoadAsync<IncidentReadModel>(incidentId);
+        var rl = await session.Events.FetchForWriting<IncidentReadModel>(incidentId);
+        var savedIncident = rl.Aggregate;
+        if (savedIncident == null)
+        {
+
+            return NotFound();
+        }
+        if (savedIncident.Status != IncidentStatus.PendingTier1Review)
+        {
+
+            return StatusCode(409);
+        }
+
         session.Events.Append(incidentId, new EmployeeCancelledIncident(incidentId));
-        await session.SaveChangesAsync();
+        await session.SaveChangesAsync(); // only append this if the version of the read model is the same as when I read it originally
         return NoContent();
     }
 }
@@ -66,10 +81,11 @@ public record UserIncidentRequestModel(string Description);
 
 // Read Models
 
-public enum IncidentStatus { PendingTier1Review }
+public enum IncidentStatus { PendingTier1Review, CustomerContacted }
 public class IncidentReadModel
 {
     public Guid Id { get; set; }
+    public int Version { get; set; }
     public string Description { get; set; } = string.Empty;
     public Guid CatalogId { get; set; }
     public Guid UserId { get; set; }
@@ -90,9 +106,14 @@ public class IncidentReadModel
 
     }
 
+    public void Apply(IncidentContactRecorded evt)
+    {
+        Status = IncidentStatus.CustomerContacted;
+    }
+
     public bool ShouldDelete(EmployeeCancelledIncident evt)
     {
-        return true;
+        return Status == IncidentStatus.PendingTier1Review; // the suspenders to your belt.
     }
 
 
