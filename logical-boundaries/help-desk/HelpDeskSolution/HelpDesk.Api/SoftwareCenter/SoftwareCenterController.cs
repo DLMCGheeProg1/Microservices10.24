@@ -2,6 +2,7 @@
 
 namespace HelpDesk.Api.SoftwareCenter;
 
+[ApiExplorerSettings(GroupName = "Software Center Integration")]
 [Route("software-center/catalog")]
 public class SoftwareCenterController(IDocumentSession session) : ControllerBase
 {

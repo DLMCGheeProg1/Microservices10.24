@@ -1,11 +1,15 @@
-﻿using HelpDesk.Api.Services;
+﻿using HelpDesk.Api.Incidents.Events;
+using HelpDesk.Api.Services;
 using Marten;
 
-namespace HelpDesk.Api.Incidents.TierOne;
+namespace HelpDesk.Api.Incidents.Endpoints.TierOne;
 
-public class TierOneController(IDocumentSession session, IProvideUserInformation userInfo) : ControllerBase
+public record ContactRecordRequest(string Note);
+
+[ApiExplorerSettings(GroupName = "Tier One Support")]
+public class CommandsController(IDocumentSession session, IProvideUserInformation userInfo) : ControllerBase
 {
-    //POST /tierone/submitted-incidents/{id}/contact-records
+ 
     [HttpPost("/tierone/submitted-incidents/{incidentId:guid}/contact-records")]
     public async Task<ActionResult> AddContactRecordForIncident(
         Guid incidentId,
@@ -22,6 +26,6 @@ public class TierOneController(IDocumentSession session, IProvideUserInformation
 
 }
 
-public record ContactRecordRequest(string Note);
 
-public record IncidentContactRecorded(Guid Id, Guid TierOneTechId, string Note);
+
+

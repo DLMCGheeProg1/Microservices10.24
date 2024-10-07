@@ -1,6 +1,4 @@
-﻿namespace HelpDesk.Api.Incidents;
-
-// Employee Logs a New Incident: Id, Employee Id, Software Id, Description, 
+namespace HelpDesk.Api.Incidents.Events;
 
 public record EmployeeLoggedIncident(Guid Id, Guid EmployeeId, Guid SoftwareId, string Description);
 

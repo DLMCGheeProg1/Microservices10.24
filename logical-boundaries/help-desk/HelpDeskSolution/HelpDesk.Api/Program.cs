@@ -1,6 +1,9 @@
 
 using HelpDesk.Api.Catalog;
+using HelpDesk.Api.Catalog.Endpoints;
+using HelpDesk.Api.Catalog.ReadModels;
 using HelpDesk.Api.Incidents;
+using HelpDesk.Api.Incidents.ReadModels;
 using HelpDesk.Api.Services;
 using HelpDesk.Api.User.ReadModels;
 using HelpDesk.Api.User.Services;
@@ -38,8 +41,9 @@ builder.Services.AddMarten(opts =>
     opts.Connection(connectionString);
     opts.Schema.For<User>().Index(u => u.Sub, x => x.IsUnique = true);
     opts.Projections.Add<UserProjection>(ProjectionLifecycle.Inline);
-    opts.Projections.Snapshot<IncidentReadModel>(SnapshotLifecycle.Inline);
-    opts.Projections.Add<SoftwareCatalogItemProjection>(ProjectionLifecycle.Async);
+    opts.Projections.Snapshot<IncidentSnapshot>(SnapshotLifecycle.Inline);
+    opts.Projections.Add<CatalogItemProjection>(ProjectionLifecycle.Async);
+    
 
 }).UseLightweightSessions().AddAsyncDaemon(DaemonMode.Solo);
 
