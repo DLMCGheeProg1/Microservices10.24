@@ -10,7 +10,7 @@ public class QueryController(IQuerySession session, IProvideUserInformation user
     public async Task<ActionResult> GetUserIncidentsAsync()
     {
         var user = await userProvider.GetUserInfoAsync();
-        var xx = await session.Query<IncidentSnapshot>().Where(s => s.UserId == user.UserId).ToListAsync();
+        var xx = await session.Query<Incident>().Where(s => s.UserId == user.UserId).ToListAsync();
        // var incidents = await session.LoadManyAsync<UserIncident>(user.UserId);
         return Ok(xx);
     }
@@ -18,7 +18,7 @@ public class QueryController(IQuerySession session, IProvideUserInformation user
     public async Task<ActionResult> GetIncidentForCatalogItemAsync( Guid incidentId)
     {
         var user = await userProvider.GetUserInfoAsync();
-        var readModel = await session.Query<IncidentSnapshot>().Where(s => s.UserId == user.UserId).SingleOrDefaultAsync(c => c.Id == incidentId);
+        var readModel = await session.Query<Incident>().Where(s => s.UserId == user.UserId).SingleOrDefaultAsync(c => c.Id == incidentId);
         
         
         if (readModel == null)

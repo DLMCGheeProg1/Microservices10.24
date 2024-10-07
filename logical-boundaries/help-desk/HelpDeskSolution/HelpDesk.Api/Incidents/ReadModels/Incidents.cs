@@ -15,14 +15,9 @@ public class Incident
     public DateTimeOffset Created { get; set; }
     public IncidentStatus Status { get; set; }
     
-}
-
-public class IncidentSnapshot : Incident
-
-{
-    public static IncidentSnapshot Create(IEvent<EmployeeLoggedIncident> evt)
+    public static Incident Create(IEvent<EmployeeLoggedIncident> evt)
     {
-        return new IncidentSnapshot
+        return new()
         {
             Id = evt.Id,
             Description = evt.Data.Description,
@@ -42,5 +37,7 @@ public class IncidentSnapshot : Incident
     {
         return Status == IncidentStatus.PendingTier1Review; // the suspenders to your belt.
     }
+    
 }
+
 

@@ -41,7 +41,7 @@ builder.Services.AddMarten(opts =>
     opts.Connection(connectionString);
     opts.Schema.For<User>().Index(u => u.Sub, x => x.IsUnique = true);
     opts.Projections.Add<UserProjection>(ProjectionLifecycle.Inline);
-    opts.Projections.Snapshot<IncidentSnapshot>(SnapshotLifecycle.Inline);
+    opts.Projections.Snapshot<Incident>(SnapshotLifecycle.Inline);
     opts.Projections.Add<CatalogItemProjection>(ProjectionLifecycle.Async);
     
 
