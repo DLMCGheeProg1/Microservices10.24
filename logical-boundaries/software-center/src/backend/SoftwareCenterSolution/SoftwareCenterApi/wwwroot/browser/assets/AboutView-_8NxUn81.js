@@ -1,0 +1,1 @@
+import{_ as e,o as s,c as t,a as o}from"./index-TlY3zjAY.js";const c={},a={class:"about"},n=o("h1",null,"This is an about page",-1),r=[n];function _(i,d){return s(),t("div",a,[...r])}const u=e(c,[["render",_],["__file","C:/Users/ITUStudent/class/msd-oct-2024/logical-boundaries/software-center/src/frontend/src/views/AboutView.vue"]]);export{u as default};
