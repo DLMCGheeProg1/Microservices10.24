@@ -6,8 +6,15 @@ using Marten;
 namespace HelpDesk.Api.Incidents.Endpoints.UserIncidents;
 public record UserIncidentRequestModel(string Description);
 [ApiExplorerSettings(GroupName = "User Incidents")]
+[Produces("application/json")]
 public class CommandsController(IProvideUserInformation userInfoProvider, IDocumentSession session) : ControllerBase
 {
+    /// <summary>
+    /// Allows employees to report an incident with a piece of software in the catalog
+    /// </summary>
+    /// <param name="catalogId">The id of the catalog item (see /user/catalog)</param>
+    /// <param name="request">An entity describing the incident</param>
+    /// <returns>An entity with an ID for your incident</returns>
     [HttpPost("/user/catalog/{catalogId:guid}/incidents")]
 
     public async Task<ActionResult> AddUserIncidentAsync(
@@ -32,7 +39,11 @@ public class CommandsController(IProvideUserInformation userInfoProvider, IDocum
     }
 
  
-
+    /// <summary>
+    /// Allows a user to cancel an incident that they have reported. May only be cancelled if it is in the PendingTier1Review state.
+    /// </summary>
+    /// <param name="incidentId">The incident id</param>
+    /// <returns></returns>
     [HttpDelete("user/incidents/{incidentId:guid}")]
     public async Task<ActionResult> CancelIncidentAsync(Guid incidentId)
     {

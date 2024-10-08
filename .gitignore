@@ -3,7 +3,6 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-wwwroot/
 # dotenv files
 .env
 

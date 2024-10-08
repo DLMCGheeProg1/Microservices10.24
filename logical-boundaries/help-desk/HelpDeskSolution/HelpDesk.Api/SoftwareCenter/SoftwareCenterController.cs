@@ -2,10 +2,15 @@
 
 namespace HelpDesk.Api.SoftwareCenter;
 
+
 [ApiExplorerSettings(GroupName = "Software Center Integration")]
+[Produces("application/json")]
+[Consumes("application/json")]
 [Route("software-center/catalog")]
+
 public class SoftwareCenterController(IDocumentSession session) : ControllerBase
 {
+    
     [HttpPost]
 
     public async Task<ActionResult> AddItemToCatalogAsync([FromBody] CatalogItemRequestModel request)
@@ -18,6 +23,7 @@ public class SoftwareCenterController(IDocumentSession session) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteCatalogItemAsync(Guid id)
     {
         // whatever rules (more on this tomorrow...)
@@ -34,11 +40,6 @@ public class SoftwareCenterController(IDocumentSession session) : ControllerBase
 
 public record CatalogItemRequestModel(string Title, string Description);
 
-// Events
-public record CatalogItemAdded(Guid Id, string Title, string Description);
 
-public record CatalogItemRetired(Guid Id);
-
-// Read Models
 
 
