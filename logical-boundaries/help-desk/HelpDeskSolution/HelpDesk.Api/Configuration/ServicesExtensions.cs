@@ -35,16 +35,10 @@ public static class ServicesExtensions
             {
                 options.TagActionsBy(api =>
                 {
-                    if (api.GroupName != null)
-                    {
-                        return new[] { api.GroupName };
-                    }
+                    if (api.GroupName != null) return new[] { api.GroupName };
 
                     var controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
-                    if (controllerActionDescriptor != null)
-                    {
-                        return new[] { controllerActionDescriptor.ControllerName };
-                    }
+                    if (controllerActionDescriptor != null) return new[] { controllerActionDescriptor.ControllerName };
 
                     throw new InvalidOperationException("Unable to determine tag for endpoint.");
                 });

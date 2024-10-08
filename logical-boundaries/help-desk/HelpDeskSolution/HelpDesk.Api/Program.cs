@@ -1,10 +1,5 @@
-
-using HelpDesk.Api.Catalog;
-using HelpDesk.Api.Catalog.Endpoints;
 using HelpDesk.Api.Catalog.ReadModels;
-using HelpDesk.Api.Incidents;
-using HelpDesk.Api.Incidents.ReadModels;
-using HelpDesk.Api.Services;
+using HelpDesk.Api.TierOneSupport.ReadModels;
 using HelpDesk.Api.User.ReadModels;
 using HelpDesk.Api.User.Services;
 using HtTemplate.Configuration;
@@ -24,15 +19,11 @@ builder.Services.AddControllers();
 
 
 if (builder.Environment.IsDevelopment())
-{
     // this is just for a classroom - ordinarily I'd replace this in my test context.
     builder.Services
         .AddScoped<IProvideUserInformation, FakeDevelopmentUserInformation>();
-}
 else
-{
     builder.Services.AddScoped<IProvideUserInformation, UserInformationProvider>();
-}
 
 var connectionString = builder.Configuration.GetConnectionString("data") ??
                        throw new Exception("No database connection string");
@@ -43,8 +34,7 @@ builder.Services.AddMarten(opts =>
     opts.Projections.Add<UserProjection>(ProjectionLifecycle.Inline);
     opts.Projections.Snapshot<Incident>(SnapshotLifecycle.Inline);
     opts.Projections.Add<CatalogItemProjection>(ProjectionLifecycle.Async);
-    
-
+    opts.Projections.Snapshot<SubmittedIncident>(SnapshotLifecycle.Async);
 }).UseLightweightSessions().AddAsyncDaemon(DaemonMode.Solo);
 
 var app = builder.Build();

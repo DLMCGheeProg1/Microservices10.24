@@ -1,10 +1,10 @@
-using HelpDesk.Api.Incidents.Events;
+using HelpDesk.Api.Shared;
+using HelpDesk.Api.TierOneSupport.Events;
+using HelpDesk.Api.User.Events;
 using Marten.Events;
 
-namespace HelpDesk.Api.Incidents.ReadModels;
+namespace HelpDesk.Api.User.ReadModels;
 
-
-public enum IncidentStatus { PendingTier1Review, CustomerContacted }
 public class Incident
 {
     public Guid Id { get; set; }
@@ -14,10 +14,10 @@ public class Incident
     public Guid UserId { get; set; }
     public DateTimeOffset Created { get; set; }
     public IncidentStatus Status { get; set; }
-    
+
     public static Incident Create(IEvent<EmployeeLoggedIncident> evt)
     {
-        return new()
+        return new Incident
         {
             Id = evt.Id,
             Description = evt.Data.Description,
@@ -26,8 +26,8 @@ public class Incident
             Created = evt.Timestamp,
             Status = IncidentStatus.PendingTier1Review
         };
-
     }
+
     public void Apply(IncidentContactRecorded evt)
     {
         Status = IncidentStatus.CustomerContacted;
@@ -37,7 +37,4 @@ public class Incident
     {
         return Status == IncidentStatus.PendingTier1Review; // the suspenders to your belt.
     }
-    
 }
-
-
