@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// hey, if anyone makes a get request to localhost:1338/catalog send them to otherserver/catalog
 app.UseAuthentication();
 app.UseAuthorization();
 
