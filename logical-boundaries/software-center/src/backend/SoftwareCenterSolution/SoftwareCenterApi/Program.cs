@@ -31,8 +31,8 @@ builder.Host.UseWolverine(opts =>
     opts.Policies.AutoApplyTransactions();
 
     opts.UseKafka(kafkaUrl);
-    opts.PublishMessage<SoftwareCatalogItemCreated>().ToKafkaTopic("softwarecenter.catalog-item-created");
-    opts.PublishMessage<SoftwareCatalogItemRetired>().ToKafkaTopic("softwarecenter.catalog-item-retired");
+    opts.PublishMessage<SoftwareCatalogItemCreated>().ToKafkaTopic("softwarecenter.catalog-item");
+    opts.PublishMessage<SoftwareCatalogItemRetired>().ToKafkaTopic("softwarecenter.catalog-item");
     opts.Services.AddResourceSetupOnStartup();
 
 });

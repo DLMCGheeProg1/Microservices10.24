@@ -8,7 +8,7 @@ public class CatalogItemHandler(ILogger<CatalogItemHandler> logger)
 
     public async Task HandleAsync(SoftwareCatalogItemCreated msg, IDocumentSession session, CancellationToken ct)
     {
-        var @event = new CatalogItemAdded(Guid.NewGuid(), msg.Name, msg.Description);
+        var @event = new CatalogItemAdded(Guid.Parse(msg.Id), msg.Name, msg.Description);
         session.Events.StartStream(@event.Id, @event);
         logger.LogInformation("Got a new title from the software center, yo! {title}", msg.Name);
         await session.SaveChangesAsync(ct);
