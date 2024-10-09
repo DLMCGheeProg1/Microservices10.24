@@ -1,5 +1,5 @@
 # Outgoing Messages
 
-## Hiring `Hr.Api.Hiring.EmployeeHired`
+## Hiring `hr.employees`
 
 ## Salary Changes `hr.employees.salary-changes`

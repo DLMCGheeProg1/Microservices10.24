@@ -39,6 +39,12 @@ public class SubmittedIncident
     {
         return Status == IncidentStatus.PendingTier1Review; // the suspenders to your belt.
     }
+    public bool ShouldDelete(IncidentResolved _)
+    {
+        return true;
+    }
+    public bool ShouldDelete(HighPriorityIncidentElevated _) => true;
+    public bool ShouldDelete(LowPriorityIncidentElevated _) => true;
 }
 
 public record Comment(Guid Id, Guid TierOneTechId, string Note, DateTimeOffset Created);
