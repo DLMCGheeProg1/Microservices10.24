@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "Hr.Api.Hiring"
+
+message EmployeeSalaryAssigned {
+    string id = 1;
+    float previous = 2;
+    float new = 3;
+}

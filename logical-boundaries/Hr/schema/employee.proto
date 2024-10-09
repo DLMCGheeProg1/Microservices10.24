@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "Hr.Api.Hiring"
+
+message EmployeeHired {
+    string id = 1;
+    string name = 2;
+    string employeeId = 3;
+}
